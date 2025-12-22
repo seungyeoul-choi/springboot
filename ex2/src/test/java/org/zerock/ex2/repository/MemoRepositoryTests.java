@@ -11,11 +11,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.annotation.Commit;
 import org.zerock.ex2.entity.Memo;
 
 import jakarta.transaction.Transactional;
 
 @SpringBootTest
+@SuppressWarnings("null")
 public class MemoRepositoryTests {
 
     @Autowired
@@ -100,5 +102,32 @@ public class MemoRepositoryTests {
         for (Memo memo : result) {
             System.out.println(memo);
         }
+    }
+
+    @Test
+    public void testQueryMethodWithPageable() {
+        System.out.println("================================================");
+        System.out.println("=== SQL 쿼리 실행 시작 ===");
+        System.out.println("================================================");
+
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("mno").descending());
+        Page<Memo> result = memoRepository.findByMnoBetween(10L, 50L, pageable);
+
+        System.out.println("================================================");
+        System.out.println("=== 조회 결과 ===");
+        System.out.println("Total Elements: " + result.getTotalElements());
+        System.out.println("Total Pages: " + result.getTotalPages());
+        System.out.println("================================================");
+
+        result.get().forEach(memo -> System.out.println(memo));
+
+        System.out.println("================================================");
+    }
+
+    @Commit
+    @Transactional
+    @Test
+    public void testDeleteQueryMethods() {
+        memoRepository.deleteMemoByMnoLessThan(10L);
     }
 }
