@@ -1,0 +1,53 @@
+---
+description: Standards for generating JUnit 5 tests
+globs: src/test/**/*
+alwaysApply: false
+---
+
+# Testing Standards (JUnit 5)
+
+## 1. Environment
+- **Framework**: JUnit 5 (Jupiter), Mockito, AssertJ.
+- **Naming**: Use `@DisplayName` to describe the test case in Korean.
+  - Example: `@DisplayName("회원 가입 성공 테스트")`
+
+## 2. Structure (Given-When-Then)
+- **Given**: Setup mocks and test data.
+- **When**: Execute the method under test.
+- **Then**: Verify results using AssertJ (`assertThat`) and Mockito (`verify`).
+
+## 3. Controller Test (WebMvcTest)
+- Use `@WebMvcTest` for slice testing.
+- Use `MockMvc` to perform requests.
+- Verify HTTP status, content type, and JSON body.
+
+## 4. Service Test (ExtendWith)
+- Use `@ExtendWith(MockitoExtension.class)`.
+- Mock dependencies using `@Mock` and inject using `@InjectMocks`.
+
+## 5. Constraints
+- **Coverage**: Aim for 80% coverage on business logic.
+- **Edge Cases**: Always include negative test cases (e.g., ResourceNotFound, InvalidInput).
+- **No Static Imports**: Avoid static imports for clarity unless it's standard (`assertThat`, `given`).
+
+## Example Template
+```java
+@ExtendWith(MockitoExtension.class)
+class UserServiceTest {
+    @Mock UserRepository userRepository;
+    @InjectMocks UserService userService;
+
+    @Test
+    @DisplayName("사용자 ID로 조회 성공")
+    void verifyFindUserById() {
+        // Given
+        User user = new User(1L, "test");
+        given(userRepository.findById(1L)).willReturn(Optional.of(user));
+
+        // When
+        UserDto result = userService.findById(1L);
+
+        // Then
+        assertThat(result.getName()).isEqualTo("test");
+    }
+}

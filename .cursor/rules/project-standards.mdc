@@ -1,0 +1,28 @@
+---
+description: General coding standards for Spring Boot and React
+globs: **/*
+alwaysApply: true
+---
+
+# Project Context
+- **Backend**: Java 17, Spring Boot 3.x, Gradle, JPA, Lombok.
+- **Frontend**: React 18, TypeScript, Tailwind CSS, Vite.
+
+# Backend Rules (Spring Boot)
+1. **Architecture**: Follow `Controller` -> `Service` -> `Repository` layer pattern.
+2. **DTO**: Always use DTOs (Data Transfer Objects) for API requests/responses. NEVER return Entities directly.
+3. **Lombok**: Use `@RequiredArgsConstructor` for constructor injection.
+4. **Naming**: 
+   - Classes: PascalCase (e.g., `UserController`)
+   - Methods/Variables: camelCase (e.g., `findUserById`)
+   - Constants: UPPER_SNAKE_CASE
+
+# Frontend Rules (React)
+1. **Components**: Use Functional Components with Hooks.
+2. **Types**: Use TypeScript interfaces for all props and state. Avoid `any`.
+3. **Styling**: Use Tailwind CSS utility classes.
+4. **State**: Use `useState` for local state, Context API for global state if needed.
+
+# General
+- **Language**: Write all code comments and documentation in Korean.
+- **Thinking**: Think step-by-step before generating code.
